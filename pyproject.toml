@@ -30,7 +30,9 @@ classifiers = [
   "Typing :: Typed",
 ]
 dynamic = ["version"]
-dependencies = []
+dependencies = [
+  "streamlit >= 1.32.2",
+]
 
 [project.optional-dependencies]
 test = [
