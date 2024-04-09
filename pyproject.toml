@@ -58,7 +58,7 @@ Changelog = "https://github.com/uw-ssec/genetic-forensic-portal/releases"
 
 [tool.hatch]
 version.source = "vcs"
-build.hooks.vcs.version-file = "src/app/_version.py"
+build.hooks.vcs.version-file = "src/gf_app/_version.py"
 
 [tool.hatch.envs.default]
 features = ["test"]
