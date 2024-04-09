@@ -52,7 +52,7 @@ NOTE: You can also/alternatively run `pre-commit run` (changes only) or
 You are now ready to run the Neglected Diagnostics Streamlit application:
 
 ```bash
-streamlit run src/gf_app/Home.py
+streamlit run src/genetic_forensic_portal/app/Home.py
 ```
 
 ## Testing

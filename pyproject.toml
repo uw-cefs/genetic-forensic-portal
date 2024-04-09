@@ -58,7 +58,7 @@ Changelog = "https://github.com/uw-ssec/genetic-forensic-portal/releases"
 
 [tool.hatch]
 version.source = "vcs"
-build.hooks.vcs.version-file = "src/gf_app/_version.py"
+build.hooks.vcs.version-file = "src/genetic_forensic_portal/_version.py"
 
 [tool.hatch.envs.default]
 features = ["test"]
@@ -79,7 +79,7 @@ testpaths = [
 
 
 [tool.coverage]
-run.source = ["app"]
+run.source = ["gf_app"]
 report.exclude_also = [
   '\.\.\.',
   'if typing.TYPE_CHECKING:',
@@ -96,7 +96,7 @@ disallow_untyped_defs = false
 disallow_incomplete_defs = false
 
 [[tool.mypy.overrides]]
-module = "app.*"
+module = "genetic_forensic_portal.*"
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 

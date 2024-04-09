@@ -30,7 +30,7 @@ def pylint(session: nox.Session) -> None:
     # This needs to be installed into the package environment, and is slower
     # than a pre-commit check
     session.install(".", "pylint")
-    session.run("pylint", "src/gf_app", *session.posargs)
+    session.run("pylint", "genetic_forensic_portal", *session.posargs)
 
 
 @nox.session
@@ -99,7 +99,7 @@ def build_api_docs(session: nox.Session) -> None:
         "--module-first",
         "--no-toc",
         "--force",
-        "../src/gf_app",
+        "../src/genetic_forensic_portal",
     )
 
 
