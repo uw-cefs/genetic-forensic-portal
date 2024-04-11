@@ -32,6 +32,9 @@ dependencies = [
   "streamlit >= 1.32.2",
 ]
 
+[project.scripts]
+gf-portal = "genetic_forensic_portal.cli:up"
+
 [project.optional-dependencies]
 test = [
   "pytest >=6",
