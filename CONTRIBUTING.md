@@ -47,12 +47,12 @@ pre-commit install # Will install a pre-commit hook into the git repo
 NOTE: You can also/alternatively run `pre-commit run` (changes only) or
 `pre-commit run --all-files` to check even without installing the hook.
 
-## Run Neglected Diagnostics
+## Run Genetic Forensic portal
 
-You are now ready to run the Neglected Diagnostics Streamlit application:
+You are now ready to run the Genetic Forensic portal Streamlit application:
 
 ```bash
-streamlit run src/genetic_forensic_portal/app/Home.py
+gf-portal
 ```
 
 ## Testing
