@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pandas as pd
+
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
 
@@ -12,15 +14,20 @@ NOT_AUTHORIZED_UUID = "not-authorized-uuid"
 
 UUID_LIST = [SAMPLE_UUID, NO_METADATA_UUID, NOT_FOUND_UUID, NOT_AUTHORIZED_UUID]
 
-SAMPLE_IMAGE_PATH = (
-    Path(__file__).parents[2] / "resources" / "sample_images"
-)  # equivalent to ../../resources/sample_images
+
+SAMPLE_PATH = Path(__file__).parents[2] / "resources"  # equivalent to ../../resources
+
+SAMPLE_IMAGE_PATH = SAMPLE_PATH / "sample_images"
 SCAT_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_scat.png")
 SCAT_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_scat.png")
 
 # Add Voronoi sample image paths
 VORONOI_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_voronoi.png")
 VORONOI_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_voronoi.png")
+
+SAMPLE_DATA_PATH = SAMPLE_PATH / "sample_data"
+FAMILIAL_SAMPLE_DATA = str(SAMPLE_DATA_PATH / "sample_familial_matches.tsv")
+FAMILIAL_SAMPLE_DATA_2 = str(SAMPLE_DATA_PATH / "sample_familial_matches1.tsv")
 
 
 def upload_sample_analysis(data: bytes, metadata: str | None = None) -> str:
@@ -41,6 +48,27 @@ def upload_sample_analysis(data: bytes, metadata: str | None = None) -> str:
         sample_identifier = NO_METADATA_UUID
 
     return sample_identifier
+
+
+def get_familial_analysis(sample_id: str) -> pd.DataFrame:
+    # TODO: docstring
+    # TODO: testing
+    # TODO: error handling here????
+    # TODO: highlight Yes rows?
+    if sample_id is None:
+        raise ValueError(MISSING_UUID_ERROR)
+
+    analysis_path = None
+
+    if sample_id == SAMPLE_UUID:
+        analysis_path = FAMILIAL_SAMPLE_DATA
+    elif sample_id == NO_METADATA_UUID:
+        analysis_path = FAMILIAL_SAMPLE_DATA_2
+
+    if analysis_path is None:
+        raise FileNotFoundError
+
+    return pd.read_csv(analysis_path, sep="\t", skiprows=1)
 
 
 def get_scat_analysis(sample_id: str) -> str:
