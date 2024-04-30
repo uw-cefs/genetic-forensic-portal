@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
 
@@ -10,9 +12,11 @@ NOT_AUTHORIZED_UUID = "not-authorized-uuid"
 
 UUID_LIST = [SAMPLE_UUID, NO_METADATA_UUID, NOT_FOUND_UUID, NOT_AUTHORIZED_UUID]
 
-SAMPLE_IMAGE_PATH = "src/genetic_forensic_portal/resources/sample_images/"
-SCAT_SAMPLE_IMAGE = SAMPLE_IMAGE_PATH + "tan001_scat.png"
-SCAT_SAMPLE_IMAGE_2 = SAMPLE_IMAGE_PATH + "tan002_scat.png"
+SAMPLE_IMAGE_PATH = (
+    Path(__file__).parents[2] / "resources" / "sample_images"
+)  # equivalent to ../../resources/sample_images
+SCAT_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_scat.png")
+SCAT_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_scat.png")
 
 
 def upload_sample_analysis(data: bytes, metadata: str | None = None) -> str:
