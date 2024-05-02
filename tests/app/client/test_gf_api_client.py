@@ -24,7 +24,8 @@ def test_upload_no_metadata_returns_different_uuid():
 
     assert response == client.NO_METADATA_UUID
 
-#SCAT Analysis
+
+# SCAT Analysis
 
 
 def test_get_scat_analysis_returns_image_path():
@@ -54,7 +55,9 @@ def test_list_completed_analyses_returns_list():
 
     assert response == client.UUID_LIST
 
-#Voronoi Analysis
+
+# Voronoi Analysis
+
 
 def test_get_voronoi_analysis_returns_image_path():
     response = client.get_voronoi_analysis(client.SAMPLE_UUID)
