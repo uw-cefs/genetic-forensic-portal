@@ -4,7 +4,6 @@ import pytest
 
 import genetic_forensic_portal.app.client.gf_api_client as client
 
-
 TEST_FILE_DATA = b"this is a file"
 TEST_METADATA = "this is metadata"
 
