@@ -24,3 +24,5 @@ if uuid:
         )
     except FileNotFoundError:
         st.error("Analysis not found")
+    except Exception as e:
+        st.error(e)

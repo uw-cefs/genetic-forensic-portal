@@ -1,11 +1,17 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import pandas as pd
 
+logger = logging.getLogger(__name__)
+
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
+FAMILIAL_TSV_ERROR = (
+    "Error reading familial matching results. Please contact system administrator."
+)
 
 SAMPLE_UUID = "this-is-a-uuid"
 NO_METADATA_UUID = "this-is-a-differentuuid"
@@ -79,7 +85,8 @@ def get_voronoi_analysis(sample_id: str) -> str:
 
     Args:
         sample_id (str): The sample ID to get the Voronoi analysis for"""
-
+    # This is a placeholder. Eventually, the real API call will be here
+    # and we can return its response
     if sample_id is None:
         raise ValueError(MISSING_UUID_ERROR)
 
@@ -97,10 +104,12 @@ def get_voronoi_analysis(sample_id: str) -> str:
 
 
 def get_familial_analysis(sample_id: str) -> pd.DataFrame:
-    # TODO: docstring
-    # TODO: testing
-    # TODO: error handling here????
-    # TODO: highlight Yes rows?
+    """Retrieves the familial analysis for a sample
+
+    Args:
+        sample_id (str): The sample ID to get the familial analysis for"""
+    # This is a placeholder. Eventually, the real API call will be here
+    # and we can return its response
     if sample_id is None:
         raise ValueError(MISSING_UUID_ERROR)
 
@@ -114,7 +123,13 @@ def get_familial_analysis(sample_id: str) -> pd.DataFrame:
     if analysis_path is None:
         raise FileNotFoundError
 
-    return pd.read_csv(analysis_path, sep="\t", skiprows=1)
+    try:
+        return pd.read_csv(analysis_path, sep="\t", skiprows=1)
+    except FileNotFoundError as e:
+        raise e
+    except Exception:
+        logger.exception("Error parsing familial results")
+        raise RuntimeError(FAMILIAL_TSV_ERROR) from None
 
 
 def list_completed_analyses() -> list[str]:
