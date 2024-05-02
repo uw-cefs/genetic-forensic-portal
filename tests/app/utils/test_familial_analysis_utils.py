@@ -4,7 +4,6 @@ import genetic_forensic_portal.app.utils.familial_analysis_utils as fam_utils
 
 
 def test_highlight_exact_matches_match_returns_green():
-    # Test match rer
     assert fam_utils.highlight_exact_matches("Y") == fam_utils.GREEN_BACKGROUND
 
 
