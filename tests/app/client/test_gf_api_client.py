@@ -59,13 +59,13 @@ def test_list_completed_analyses_returns_list():
 def test_get_voronoi_analysis_returns_image_path():
     response = client.get_voronoi_analysis(client.SAMPLE_UUID)
 
-    assert response == client.VORONOI_SAMPLE_IMAGE
+    assert response == client.Voronoi_SAMPLE_IMAGE
 
 
 def test_get_voronoi_analysis_no_metadata_returns_different_image_path():
     response = client.get_voronoi_analysis(client.NO_METADATA_UUID)
 
-    assert response == client.VORONOI_SAMPLE_IMAGE_2
+    assert response == client.Voronoi_SAMPLE_IMAGE_2
 
 
 def test_get_voronoi_analysis_raises_error():
