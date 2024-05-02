@@ -19,8 +19,8 @@ SCAT_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_scat.png")
 SCAT_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_scat.png")
 
 # Add Voronoi sample image paths
-Voronoi_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_voronoi.png")
-Voronoi_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_voronoi.png")
+VORONOI_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_voronoi.png")
+VORONOI_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_voronoi.png")
 
 
 def upload_sample_analysis(data: bytes, metadata: str | None = None) -> str:
@@ -79,9 +79,9 @@ def get_voronoi_analysis(sample_id: str) -> str:
     analysis = None
 
     if sample_id == SAMPLE_UUID:
-        analysis = Voronoi_SAMPLE_IMAGE
+        analysis = VORONOI_SAMPLE_IMAGE
     elif sample_id == NO_METADATA_UUID:
-        analysis = Voronoi_SAMPLE_IMAGE_2
+        analysis = VORONOI_SAMPLE_IMAGE_2
 
     if analysis is None:
         raise FileNotFoundError
