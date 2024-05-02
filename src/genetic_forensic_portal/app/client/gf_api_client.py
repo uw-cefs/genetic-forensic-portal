@@ -66,6 +66,7 @@ def get_scat_analysis(sample_id: str) -> str:
 
     return analysis
 
+
 def get_voronoi_analysis(sample_id: str) -> str:
     """Gets the Voronoi analysis for a sample
 
