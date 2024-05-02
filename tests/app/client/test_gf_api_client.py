@@ -109,3 +109,8 @@ def test_get_familial_analysis_raises_error():
 def test_get_familial_analysis_raises_error_for_none():
     with pytest.raises(ValueError, match=client.MISSING_UUID_ERROR):
         client.get_familial_analysis(None)  # type: ignore[arg-type]
+
+
+def test_get_familial_analysis_with_erroring_file_raises():
+    with pytest.raises(RuntimeError, match=client.FAMILIAL_TSV_ERROR):
+        client.get_familial_analysis(client.FAMILIAL_FILE_PARSE_ERROR_UUID)

@@ -17,8 +17,15 @@ SAMPLE_UUID = "this-is-a-uuid"
 NO_METADATA_UUID = "this-is-a-differentuuid"
 NOT_FOUND_UUID = "not-found-uuid"
 NOT_AUTHORIZED_UUID = "not-authorized-uuid"
+FAMILIAL_FILE_PARSE_ERROR_UUID = "not-authorized-uuid"
 
-UUID_LIST = [SAMPLE_UUID, NO_METADATA_UUID, NOT_FOUND_UUID, NOT_AUTHORIZED_UUID]
+UUID_LIST = [
+    SAMPLE_UUID,
+    NO_METADATA_UUID,
+    NOT_FOUND_UUID,
+    NOT_AUTHORIZED_UUID,
+    FAMILIAL_FILE_PARSE_ERROR_UUID,
+]
 
 
 SAMPLE_PATH = Path(__file__).parents[2] / "resources"  # equivalent to ../../resources
@@ -34,6 +41,9 @@ VORONOI_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_voronoi.png")
 SAMPLE_DATA_PATH = SAMPLE_PATH / "sample_data"
 FAMILIAL_SAMPLE_DATA = str(SAMPLE_DATA_PATH / "sample_familial_matches.tsv")
 FAMILIAL_SAMPLE_DATA_2 = str(SAMPLE_DATA_PATH / "sample_familial_matches1.tsv")
+FAMILIAL_SAMPLE_DATA_ERRORS = str(
+    SAMPLE_DATA_PATH / "sample_familial_matches_errors.tsv"
+)
 
 
 def upload_sample_analysis(data: bytes, metadata: str | None = None) -> str:
@@ -119,16 +129,16 @@ def get_familial_analysis(sample_id: str) -> pd.DataFrame:
         analysis_path = FAMILIAL_SAMPLE_DATA
     elif sample_id == NO_METADATA_UUID:
         analysis_path = FAMILIAL_SAMPLE_DATA_2
+    elif sample_id == FAMILIAL_FILE_PARSE_ERROR_UUID:
+        analysis_path = FAMILIAL_SAMPLE_DATA_ERRORS
 
     if analysis_path is None:
         raise FileNotFoundError
 
     try:
         return pd.read_csv(analysis_path, sep="\t", skiprows=1)
-    except FileNotFoundError as e:
-        raise e
     except Exception:
-        logger.exception("Error parsing familial results")
+        logger.exception("Error loading familial results")
         raise RuntimeError(FAMILIAL_TSV_ERROR) from None
 
 
