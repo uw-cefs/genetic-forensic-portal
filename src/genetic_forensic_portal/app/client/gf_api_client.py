@@ -17,7 +17,7 @@ SAMPLE_UUID = "this-is-a-uuid"
 NO_METADATA_UUID = "this-is-a-differentuuid"
 NOT_FOUND_UUID = "not-found-uuid"
 NOT_AUTHORIZED_UUID = "not-authorized-uuid"
-FAMILIAL_FILE_PARSE_ERROR_UUID = "not-authorized-uuid"
+FAMILIAL_FILE_PARSE_ERROR_UUID = "familial-parse-error-uuid"
 
 UUID_LIST = [
     SAMPLE_UUID,
