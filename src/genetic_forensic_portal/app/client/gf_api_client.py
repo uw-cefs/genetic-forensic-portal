@@ -2,11 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-#from utils.status_enum import AnalysisStatus
-
+# from utils.status_enum import AnalysisStatus
 from genetic_forensic_portal.utils.status_enum import AnalysisStatus
-
-
 
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
@@ -73,7 +70,6 @@ def get_scat_analysis(sample_id: str) -> str:
     elif sample_id == IN_PROGRESS_UUID:
         analysis = SCAT_SAMPLE_IMAGE  # This can be any image that represents an in-progress state
 
-
     if analysis is None:
         raise FileNotFoundError
 
@@ -111,6 +107,7 @@ def list_completed_analyses() -> list[str]:
     # and we can return its response
 
     return UUID_LIST
+
 
 def get_analysis_status(sample_id: str) -> str:
     """

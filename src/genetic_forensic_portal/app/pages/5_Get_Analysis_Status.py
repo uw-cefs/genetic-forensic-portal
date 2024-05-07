@@ -22,4 +22,4 @@ if uuid:
     except FileNotFoundError:
         st.error("Analysis not found for the given UUID")
     except Exception as e:
-        st.error(f"An unexpected error occurred: {str(e)}")
+        st.error(f"An unexpected error occurred: {e!s}")
