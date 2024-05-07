@@ -3,7 +3,6 @@ from __future__ import annotations
 import pytest
 
 import genetic_forensic_portal.app.client.gf_api_client as client
-
 from genetic_forensic_portal.utils.status_enum import AnalysisStatus
 
 TEST_FILE_DATA = b"this is a file"
@@ -88,19 +87,22 @@ def test_get_analysis_status_succeeded():
     response = client.get_analysis_status(client.SAMPLE_UUID)
     assert response == AnalysisStatus.ANALYSIS_SUCCEEDED.value
 
+
 def test_get_analysis_status_in_progress():
     response = client.get_analysis_status(client.IN_PROGRESS_UUID)
     assert response == AnalysisStatus.ANALYSIS_IN_PROGRESS.value
+
 
 def test_get_analysis_status_failed():
     response = client.get_analysis_status(client.ANALYSIS_FAILED_UUID)
     assert response == AnalysisStatus.ANALYSIS_FAILED.value
 
+
 def test_get_analysis_status_not_found():
     with pytest.raises(FileNotFoundError):
         client.get_analysis_status("unknown-uuid")
 
+
 def test_get_analysis_status_no_uuid_provided():
     with pytest.raises(ValueError, match=client.MISSING_UUID_ERROR):
         client.get_analysis_status(None)
-

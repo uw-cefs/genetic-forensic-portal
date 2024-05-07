@@ -2,11 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-#from utils.status_enum import AnalysisStatus
-
+# from utils.status_enum import AnalysisStatus
 from genetic_forensic_portal.utils.status_enum import AnalysisStatus
-
-
 
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
@@ -73,7 +70,6 @@ def get_scat_analysis(sample_id: str) -> str:
     elif sample_id == IN_PROGRESS_UUID:
         analysis = SCAT_SAMPLE_IMAGE  # This can be any image that represents an in-progress state
 
-
     if analysis is None:
         raise FileNotFoundError
 
@@ -112,7 +108,35 @@ def list_completed_analyses() -> list[str]:
 
     return UUID_LIST
 
-def get_analysis_status(sample_id: str) -> str:
+
+# def get_analysis_status(sample_id: str | None) -> str:
+#     """
+#     Retrieves the status of the analysis based on the given UUID.
+
+#     Args:
+#         sample_id (str): The UUID of the analysis to retrieve the status for.
+
+#     Returns:
+#         str: The human-readable status of the analysis.
+
+#     Raises:
+#         ValueError: If no UUID is provided.
+#         FileNotFoundError: If the UUID does not correspond to any analysis.
+#     """
+# if sample_id is None:
+#     raise ValueError(MISSING_UUID_ERROR)
+
+# if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
+#     return AnalysisStatus.ANALYSIS_SUCCEEDED.value
+# if sample_id == IN_PROGRESS_UUID:
+#     return AnalysisStatus.ANALYSIS_IN_PROGRESS.value
+# if sample_id == ANALYSIS_FAILED_UUID:
+#     return AnalysisStatus.ANALYSIS_FAILED.value
+
+# raise FileNotFoundError("No analysis found for the given UUID")
+
+
+def get_analysis_status(sample_id: str | None) -> str:
     """
     Retrieves the status of the analysis based on the given UUID.
 
@@ -127,13 +151,15 @@ def get_analysis_status(sample_id: str) -> str:
         FileNotFoundError: If the UUID does not correspond to any analysis.
     """
     if sample_id is None:
-        raise ValueError(MISSING_UUID_ERROR)
+        error_message = MISSING_UUID_ERROR
+        raise ValueError(error_message)
 
     if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
         return AnalysisStatus.ANALYSIS_SUCCEEDED.value
-    elif sample_id == IN_PROGRESS_UUID:
+    if sample_id == IN_PROGRESS_UUID:
         return AnalysisStatus.ANALYSIS_IN_PROGRESS.value
-    elif sample_id == ANALYSIS_FAILED_UUID:
+    if sample_id == ANALYSIS_FAILED_UUID:
         return AnalysisStatus.ANALYSIS_FAILED.value
 
-    raise FileNotFoundError("No analysis found for the given UUID")
+    error_message = "No analysis found for the given UUID"
+    raise FileNotFoundError(error_message)
