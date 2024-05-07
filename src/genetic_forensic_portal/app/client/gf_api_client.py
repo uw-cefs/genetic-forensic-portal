@@ -109,34 +109,8 @@ def list_completed_analyses() -> list[str]:
     return UUID_LIST
 
 
-# def get_analysis_status(sample_id: str | None) -> str:
-#     """
-#     Retrieves the status of the analysis based on the given UUID.
 
-#     Args:
-#         sample_id (str): The UUID of the analysis to retrieve the status for.
-
-#     Returns:
-#         str: The human-readable status of the analysis.
-
-#     Raises:
-#         ValueError: If no UUID is provided.
-#         FileNotFoundError: If the UUID does not correspond to any analysis.
-#     """
-# if sample_id is None:
-#     raise ValueError(MISSING_UUID_ERROR)
-
-# if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
-#     return AnalysisStatus.ANALYSIS_SUCCEEDED.value
-# if sample_id == IN_PROGRESS_UUID:
-#     return AnalysisStatus.ANALYSIS_IN_PROGRESS.value
-# if sample_id == ANALYSIS_FAILED_UUID:
-#     return AnalysisStatus.ANALYSIS_FAILED.value
-
-# raise FileNotFoundError("No analysis found for the given UUID")
-
-
-def get_analysis_status(sample_id: str | None) -> str:
+def get_analysis_status(sample_id: str) -> str:
     """
     Retrieves the status of the analysis based on the given UUID.
 
