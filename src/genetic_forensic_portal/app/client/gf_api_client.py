@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-# from utils.status_enum import AnalysisStatus
 from genetic_forensic_portal.utils.status_enum import AnalysisStatus
 
 MISSING_DATA_ERROR = "data is required"
@@ -109,8 +108,7 @@ def list_completed_analyses() -> list[str]:
     return UUID_LIST
 
 
-
-def get_analysis_status(sample_id: str) -> str:
+def get_analysis_status(sample_id: str | None) -> str:
     """
     Retrieves the status of the analysis based on the given UUID.
 
