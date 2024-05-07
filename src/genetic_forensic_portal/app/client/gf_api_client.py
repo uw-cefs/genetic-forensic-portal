@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+#from utils.status_enum import AnalysisStatus
+
+from genetic_forensic_portal.utils.status_enum import AnalysisStatus
+
+
+
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
 
@@ -11,6 +17,10 @@ NOT_FOUND_UUID = "not-found-uuid"
 NOT_AUTHORIZED_UUID = "not-authorized-uuid"
 
 UUID_LIST = [SAMPLE_UUID, NO_METADATA_UUID, NOT_FOUND_UUID, NOT_AUTHORIZED_UUID]
+
+IN_PROGRESS_UUID = "in-progress-uuid"
+ANALYSIS_FAILED_UUID = "failed-uuid"
+UUID_LIST.extend([IN_PROGRESS_UUID, ANALYSIS_FAILED_UUID])
 
 SAMPLE_IMAGE_PATH = (
     Path(__file__).parents[2] / "resources" / "sample_images"
@@ -60,6 +70,9 @@ def get_scat_analysis(sample_id: str) -> str:
         analysis = SCAT_SAMPLE_IMAGE
     elif sample_id == NO_METADATA_UUID:
         analysis = SCAT_SAMPLE_IMAGE_2
+    elif sample_id == IN_PROGRESS_UUID:
+        analysis = SCAT_SAMPLE_IMAGE  # This can be any image that represents an in-progress state
+
 
     if analysis is None:
         raise FileNotFoundError
@@ -98,3 +111,29 @@ def list_completed_analyses() -> list[str]:
     # and we can return its response
 
     return UUID_LIST
+
+def get_analysis_status(sample_id: str) -> str:
+    """
+    Retrieves the status of the analysis based on the given UUID.
+
+    Args:
+        sample_id (str): The UUID of the analysis to retrieve the status for.
+
+    Returns:
+        str: The human-readable status of the analysis.
+
+    Raises:
+        ValueError: If no UUID is provided.
+        FileNotFoundError: If the UUID does not correspond to any analysis.
+    """
+    if sample_id is None:
+        raise ValueError(MISSING_UUID_ERROR)
+
+    if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
+        return AnalysisStatus.ANALYSIS_SUCCEEDED.value
+    elif sample_id == IN_PROGRESS_UUID:
+        return AnalysisStatus.ANALYSIS_IN_PROGRESS.value
+    elif sample_id == ANALYSIS_FAILED_UUID:
+        return AnalysisStatus.ANALYSIS_FAILED.value
+
+    raise FileNotFoundError("No analysis found for the given UUID")
