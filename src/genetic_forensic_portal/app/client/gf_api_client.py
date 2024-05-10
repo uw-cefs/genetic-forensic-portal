@@ -124,6 +124,8 @@ def get_analysis_status(sample_id: str) -> str:
         str: The human-readable status of the analysis.
 
     """
+    if sample_id is None:
+        raise ValueError(MISSING_UUID_ERROR)
 
     if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
         return AnalysisStatus.ANALYSIS_SUCCEEDED.value
