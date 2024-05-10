@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from genetic_forensic_portal.utils.status_enum import AnalysisStatus
+from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
 
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
@@ -11,12 +11,17 @@ SAMPLE_UUID = "this-is-a-uuid"
 NO_METADATA_UUID = "this-is-a-differentuuid"
 NOT_FOUND_UUID = "not-found-uuid"
 NOT_AUTHORIZED_UUID = "not-authorized-uuid"
-
-UUID_LIST = [SAMPLE_UUID, NO_METADATA_UUID, NOT_FOUND_UUID, NOT_AUTHORIZED_UUID]
-
 IN_PROGRESS_UUID = "in-progress-uuid"
 ANALYSIS_FAILED_UUID = "failed-uuid"
-UUID_LIST.extend([IN_PROGRESS_UUID, ANALYSIS_FAILED_UUID])
+
+UUID_LIST = [
+    SAMPLE_UUID,
+    NO_METADATA_UUID,
+    NOT_FOUND_UUID,
+    NOT_AUTHORIZED_UUID,
+    IN_PROGRESS_UUID,
+    ANALYSIS_FAILED_UUID,
+]
 
 SAMPLE_IMAGE_PATH = (
     Path(__file__).parents[2] / "resources" / "sample_images"
@@ -97,7 +102,7 @@ def get_voronoi_analysis(sample_id: str) -> str:
     return analysis
 
 
-def list_completed_analyses() -> list[str]:
+def list_analyses() -> list[str]:
     """Lists UUIDs for all SCAT analyses
 
     Returns:
@@ -108,7 +113,7 @@ def list_completed_analyses() -> list[str]:
     return UUID_LIST
 
 
-def get_analysis_status(sample_id: str | None) -> str:
+def get_analysis_status(sample_id: str) -> str:
     """
     Retrieves the status of the analysis based on the given UUID.
 
@@ -118,13 +123,7 @@ def get_analysis_status(sample_id: str | None) -> str:
     Returns:
         str: The human-readable status of the analysis.
 
-    Raises:
-        ValueError: If no UUID is provided.
-        FileNotFoundError: If the UUID does not correspond to any analysis.
     """
-    if sample_id is None:
-        error_message = MISSING_UUID_ERROR
-        raise ValueError(error_message)
 
     if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
         return AnalysisStatus.ANALYSIS_SUCCEEDED.value
