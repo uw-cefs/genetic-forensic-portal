@@ -3,9 +3,9 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
+import pandas as pd
 
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 
