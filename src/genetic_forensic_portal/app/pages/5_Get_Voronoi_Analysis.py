@@ -6,10 +6,14 @@ from genetic_forensic_portal.app.client import gf_api_client as client
 
 st.header("Get Voronoi Analysis")
 
+uuid = st.session_state.uuid if "uuid" in st.session_state else None
+
+analysis_list = client.list_analyses()
+
 uuid = st.selectbox(
     "Select a sample ID",
     client.list_analyses(),
-    index=None,
+    index=st.session_state.index if "index" in st.session_state else None,
     placeholder="Select sample ID...",
 )
 
