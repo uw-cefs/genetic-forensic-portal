@@ -3,4 +3,4 @@
 # files (such as conda-linux-64.lock, start) in this repo.
 # Refer to the base-image/Dockerfile for documentation.
 ARG SSEC_BASE_IMAGE_TAG=latest
-FROM base-image:${SSEC_BASE_IMAGE_TAG}
+FROM ghcr.io/uw-ssec/base-image:${SSEC_BASE_IMAGE_TAG}
