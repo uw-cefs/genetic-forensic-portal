@@ -7,6 +7,8 @@ import pandas as pd
 
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
 
+from .models.list_analyses_response import ListAnalysesResponse
+
 logger = logging.getLogger(__name__)
 
 
@@ -50,6 +52,9 @@ FAMILIAL_SAMPLE_DATA_2 = str(SAMPLE_DATA_PATH / "sample_familial_matches1.tsv")
 FAMILIAL_SAMPLE_DATA_ERRORS = str(
     SAMPLE_DATA_PATH / "sample_familial_matches_errors.tsv"
 )
+
+# Arbitrarily chosen to demonstrate pagination
+DEFAULT_LIST_PAGE_SIZE = 5
 
 
 def upload_sample_analysis(data: bytes, metadata: str | None = None) -> str:
@@ -150,15 +155,43 @@ def get_familial_analysis(sample_id: str) -> pd.DataFrame:
         raise RuntimeError(FAMILIAL_TSV_ERROR) from None
 
 
-def list_analyses() -> list[str]:
+def list_analyses(next_token: int | None = None) -> ListAnalysesResponse:
     """Lists UUIDs for all SCAT analyses
 
     Returns:
         list[str]: A list of all SCAT analyses"""
     # This is a placeholder. Eventually, the real API call will be here
     # and we can return its response
+    if next_token is None or next_token <= 0:
+        # return first page
+        return ListAnalysesResponse(
+            UUID_LIST[:DEFAULT_LIST_PAGE_SIZE], next_token=DEFAULT_LIST_PAGE_SIZE
+        )
 
-    return UUID_LIST
+    if next_token < len(UUID_LIST):
+        # print(f"Next token: {next_token}")
+        return ListAnalysesResponse(UUID_LIST[next_token:], start_token=next_token)
+
+    return ListAnalysesResponse([])
+
+
+def list_all_analyses() -> list[str]:
+    """Lists UUIDs for all analyses
+
+    Returns:
+        list[str]: A list of all analyses"""
+    # This is a placeholder. Eventually, the real API call will be here
+    # and we can return its response
+    analyses = []
+
+    retrieved_analyses = list_analyses()
+
+    while retrieved_analyses.next_token is not None:
+        analyses.extend(retrieved_analyses.analyses)
+        retrieved_analyses = list_analyses(retrieved_analyses.next_token)
+
+    analyses.extend(retrieved_analyses.analyses)
+    return analyses
 
 
 def get_analysis_status(sample_id: str) -> AnalysisStatus:

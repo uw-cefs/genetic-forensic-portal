@@ -15,18 +15,59 @@ def try_get_analysis(uuid: str) -> AnalysisStatus:
         return AnalysisStatus.ANALYSIS_ERROR
 
 
+st.session_state.sorted_results = (
+    [] if "sorted_results" not in st.session_state else st.session_state.sorted_results
+)
+st.session_state.analysis_start = (
+    0 if "analysis_start" not in st.session_state else st.session_state.analysis_start
+)
+st.session_state.analysis_next = (
+    None if "analysis_next" not in st.session_state else st.session_state.analysis_next
+)
+
+
 def update_session_state(uuid: str, index: int) -> None:
     st.session_state.uuid = uuid
     st.session_state.index = index
 
 
+def retrieve_analyses(start: int | None = None) -> list[str]:
+    if (
+        len(st.session_state.sorted_results) == 0
+        or st.session_state.analysis_next is not None
+    ):
+        analyses_list = client.list_analyses(start)
+        st.session_state.analysis_start = analyses_list.start_token
+        st.session_state.analysis_next = analyses_list.next_token
+        return analyses_list.analyses
+    return []
+
+
+def retrieve_and_sort_analyses(start: int | None = None) -> None:
+    analyses = retrieve_analyses(start)
+    statuses = [try_get_analysis(analysis) for analysis in analyses]
+    results = list(zip(range(len(analyses)), analyses, statuses, strict=True))
+    full_results = st.session_state.sorted_results + results
+    st.session_state.sorted_results = sorted(full_results, key=lambda x: x[2])
+
+
 st.header("List Analyses")
 
-analyses = client.list_analyses()
-statuses = [try_get_analysis(analysis) for analysis in analyses]
+if len(st.session_state.sorted_results) == 0:
+    retrieve_and_sort_analyses()
 
-results = zip(range(len(analyses)), analyses, statuses, strict=True)
-sorted_results = sorted(results, key=lambda x: x[2])
+
+st.write(f"Showing {len(st.session_state.sorted_results)} analyses.")
+
+if st.session_state.analysis_next is not None:
+    st.write("More analyses can be shown. Load them?")
+    st.button(
+        "Load more",
+        on_click=lambda: retrieve_and_sort_analyses(
+            start=st.session_state.analysis_next
+        ),
+    )
+
 
 ana_col, status_col, scat_col, vor_col, fam_col = st.columns([1, 0.7, 0.5, 0.5, 0.5])
 ana_col.write("**Analysis ID**")
@@ -35,7 +76,8 @@ scat_col.write("**SCAT Analysis**")
 vor_col.write("**Voronoi Analysis**")
 fam_col.write("**Familial Analysis**")
 
-for index, analysis, status in sorted_results:
+# TODO pagination
+for index, analysis, status in st.session_state.sorted_results:
     ana_col, status_col, scat_col, vor_col, fam_col = st.columns(
         [1, 0.7, 0.5, 0.5, 0.5]
     )

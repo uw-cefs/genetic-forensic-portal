@@ -8,7 +8,7 @@ st.title("Get Analysis Status")
 
 uuid = st.selectbox(
     "Select a sample ID",
-    client.list_analyses(),
+    client.list_all_analyses(),
     index=None,
     placeholder="Select sample ID...",
 )

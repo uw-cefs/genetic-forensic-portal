@@ -58,10 +58,26 @@ def test_get_scat_analysis_raises_error_for_none():
         client.get_scat_analysis(None)  # type: ignore[arg-type]
 
 
-def test_list_analyses_returns_list():
-    response = client.list_analyses()
+def test_list_all_analyses_returns_list():
+    response = client.list_all_analyses()
 
     assert response == client.UUID_LIST
+
+
+def test_list_analyses_returns_response_object():
+    response = client.list_analyses()
+
+    assert response.analyses == client.UUID_LIST[: client.DEFAULT_LIST_PAGE_SIZE]
+    assert response.start_token == 0
+    assert response.next_token == client.DEFAULT_LIST_PAGE_SIZE
+
+
+def test_list_analyses_with_start_returns_correct_page():
+    response = client.list_analyses(client.DEFAULT_LIST_PAGE_SIZE)
+
+    assert response.analyses == client.UUID_LIST[client.DEFAULT_LIST_PAGE_SIZE :]
+    assert response.start_token == client.DEFAULT_LIST_PAGE_SIZE
+    assert response.next_token is None
 
 
 # Voronoi Analysis

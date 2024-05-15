@@ -9,7 +9,7 @@ st.header("Get Familial Analysis")
 
 uuid = st.session_state.uuid if "uuid" in st.session_state else None
 
-analysis_list = client.list_analyses()
+analysis_list = client.list_all_analyses()
 
 uuid = st.selectbox(
     "Select a sample ID",
