@@ -161,7 +161,7 @@ def list_analyses() -> list[str]:
     return UUID_LIST
 
 
-def get_analysis_status(sample_id: str) -> str:
+def get_analysis_status(sample_id: str) -> AnalysisStatus:
     """
     Retrieves the status of the analysis based on the given UUID.
 
@@ -176,11 +176,11 @@ def get_analysis_status(sample_id: str) -> str:
         raise ValueError(MISSING_UUID_ERROR)
 
     if sample_id in [SAMPLE_UUID, NO_METADATA_UUID]:
-        return AnalysisStatus.ANALYSIS_SUCCEEDED.value
+        return AnalysisStatus.ANALYSIS_SUCCEEDED
     if sample_id == IN_PROGRESS_UUID:
-        return AnalysisStatus.ANALYSIS_IN_PROGRESS.value
+        return AnalysisStatus.ANALYSIS_IN_PROGRESS
     if sample_id == ANALYSIS_FAILED_UUID:
-        return AnalysisStatus.ANALYSIS_FAILED.value
+        return AnalysisStatus.ANALYSIS_FAILED
 
     error_message = "No analysis found for the given UUID"
     raise FileNotFoundError(error_message)

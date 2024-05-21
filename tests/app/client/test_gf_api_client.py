@@ -92,17 +92,17 @@ def test_get_voronoi_analysis_raises_error_for_none():
 # Tests for the get_analysis_status function
 def test_get_analysis_status_succeeded():
     response = client.get_analysis_status(client.SAMPLE_UUID)
-    assert response == AnalysisStatus.ANALYSIS_SUCCEEDED.value
+    assert response == AnalysisStatus.ANALYSIS_SUCCEEDED
 
 
 def test_get_analysis_status_in_progress():
     response = client.get_analysis_status(client.IN_PROGRESS_UUID)
-    assert response == AnalysisStatus.ANALYSIS_IN_PROGRESS.value
+    assert response == AnalysisStatus.ANALYSIS_IN_PROGRESS
 
 
 def test_get_analysis_status_failed():
     response = client.get_analysis_status(client.ANALYSIS_FAILED_UUID)
-    assert response == AnalysisStatus.ANALYSIS_FAILED.value
+    assert response == AnalysisStatus.ANALYSIS_FAILED
 
 
 def test_get_analysis_status_not_found():
