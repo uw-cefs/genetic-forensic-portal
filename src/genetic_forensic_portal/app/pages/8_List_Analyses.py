@@ -25,11 +25,6 @@ st.header("List Analyses")
 analyses = client.list_analyses()
 statuses = [try_get_analysis(analysis) for analysis in analyses]
 
-results = zip(range(len(analyses)), analyses, statuses, strict=False)
-results = sorted(results, key=lambda x: x[2])
-
-statuses = [try_get_analysis(analysis) for analysis in analyses]
-
 results = zip(range(len(analyses)), analyses, statuses, strict=True)
 sorted_results = sorted(results, key=lambda x: x[2])
 
