@@ -15,15 +15,9 @@ def try_get_analysis(uuid: str) -> AnalysisStatus:
         return AnalysisStatus.ANALYSIS_ERROR
 
 
-st.session_state.sorted_results = (
-    [] if "sorted_results" not in st.session_state else st.session_state.sorted_results
-)
-st.session_state.analysis_start = (
-    0 if "analysis_start" not in st.session_state else st.session_state.analysis_start
-)
-st.session_state.analysis_next = (
-    None if "analysis_next" not in st.session_state else st.session_state.analysis_next
-)
+st.session_state.sorted_results = getattr(st.session_state, "sorted_results", [])
+st.session_state.analysis_start = getattr(st.session_state, "analysis_start", 0)
+st.session_state.analysis_next = getattr(st.session_state, "analysis_next", None)
 
 
 def update_session_state(uuid: str, index: int) -> None:
@@ -76,7 +70,7 @@ scat_col.write("**SCAT Analysis**")
 vor_col.write("**Voronoi Analysis**")
 fam_col.write("**Familial Analysis**")
 
-# TODO pagination
+
 for index, analysis, status in st.session_state.sorted_results:
     ana_col, status_col, scat_col, vor_col, fam_col = st.columns(
         [1, 0.7, 0.5, 0.5, 0.5]

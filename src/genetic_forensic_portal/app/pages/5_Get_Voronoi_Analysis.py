@@ -6,7 +6,7 @@ from genetic_forensic_portal.app.client import gf_api_client as client
 
 st.header("Get Voronoi Analysis")
 
-uuid = st.session_state.uuid if "uuid" in st.session_state else None
+uuid = getattr(st.session_state, "uuid", None)
 
 analysis_list = client.list_all_analyses()
 
