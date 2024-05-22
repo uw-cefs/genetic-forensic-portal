@@ -37,10 +37,12 @@ def retrieve_analyses(start: int | None = None) -> list[str]:
     return []
 
 
-def retrieve_and_sort_analyses(start: int | None = None) -> None:
+def retrieve_and_sort_analyses(start: int = 0) -> None:
     analyses = retrieve_analyses(start)
     statuses = [try_get_analysis(analysis) for analysis in analyses]
-    results = list(zip(range(len(analyses)), analyses, statuses, strict=True))
+    results = list(
+        zip(range(start, start + len(analyses)), analyses, statuses, strict=True)
+    )
     full_results = st.session_state.sorted_results + results
     st.session_state.sorted_results = sorted(full_results, key=lambda x: x[2])
 
