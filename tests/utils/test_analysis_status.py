@@ -17,3 +17,8 @@ def test_ordering():
     assert AnalysisStatus.ANALYSIS_NOT_FOUND > AnalysisStatus.ANALYSIS_FAILED
     assert AnalysisStatus.ANALYSIS_FAILED > AnalysisStatus.ANALYSIS_IN_PROGRESS
     assert AnalysisStatus.ANALYSIS_IN_PROGRESS > AnalysisStatus.ANALYSIS_SUCCEEDED
+
+
+def test_ordering_with_arbitrary_strings_uses_string_ordering():
+    assert AnalysisStatus.ANALYSIS_SUCCEEDED < "ZZZZZZZ"
+    assert AnalysisStatus.ANALYSIS_SUCCEEDED > "AAAAAAA"
