@@ -80,6 +80,26 @@ def test_list_analyses_with_start_returns_correct_page():
     assert response.next_token is None
 
 
+def test_list_analyses_with_early_returns_page_with_correct_size():
+    start_token = 1
+    response = client.list_analyses(start_token)
+
+    expected_end = start_token + client.DEFAULT_LIST_PAGE_SIZE
+
+    assert response.analyses == client.UUID_LIST[start_token:expected_end]
+    assert len(response.analyses) == client.DEFAULT_LIST_PAGE_SIZE
+    assert response.start_token == start_token
+    assert response.next_token == expected_end
+
+
+def test_list_analyses_with_out_of_bounds_start_returns_empty_list():
+    response = client.list_analyses(100)
+
+    assert response.analyses == []
+    assert response.start_token == 0
+    assert response.next_token is None
+
+
 # Voronoi Analysis
 
 

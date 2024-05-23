@@ -155,24 +155,28 @@ def get_familial_analysis(sample_id: str) -> pd.DataFrame:
         raise RuntimeError(FAMILIAL_TSV_ERROR) from None
 
 
-def list_analyses(next_token: int | None = None) -> ListAnalysesResponse:
+def list_analyses(next_token: int = 0) -> ListAnalysesResponse:
     """Lists UUIDs for all SCAT analyses
 
     Returns:
-        list[str]: A list of all SCAT analyses"""
+        ListAnalysesResponse: A list of all SCAT analyses with indications of pagination"""
     # This is a placeholder. Eventually, the real API call will be here
     # and we can return its response
-    if next_token is None or next_token <= 0:
-        # return first page
-        return ListAnalysesResponse(
-            UUID_LIST[:DEFAULT_LIST_PAGE_SIZE], next_token=DEFAULT_LIST_PAGE_SIZE
-        )
 
-    if next_token < len(UUID_LIST):
-        # print(f"Next token: {next_token}")
-        return ListAnalysesResponse(UUID_LIST[next_token:], start_token=next_token)
+    # check for out of bounds
+    if next_token >= len(UUID_LIST):
+        return ListAnalysesResponse([])
 
-    return ListAnalysesResponse([])
+    # set reasonable bounds for the page
+    new_start_token = max(next_token, 0)
+    new_end_token = min(next_token + DEFAULT_LIST_PAGE_SIZE, len(UUID_LIST))
+    new_next_token = new_end_token if new_end_token < len(UUID_LIST) else None
+
+    return ListAnalysesResponse(
+        UUID_LIST[new_start_token:new_end_token],
+        start_token=new_start_token,
+        next_token=new_next_token,
+    )
 
 
 def list_all_analyses() -> list[str]:

@@ -12,7 +12,7 @@ analysis_list = client.list_all_analyses()
 
 uuid = st.selectbox(
     "Select a sample ID",
-    client.list_analyses(),
+    client.list_all_analyses(),
     index=getattr(st.session_state, "index", None),
     placeholder="Select sample ID...",
 )
