@@ -25,7 +25,7 @@ def update_session_state(uuid: str, index: int) -> None:
     st.session_state.index = index
 
 
-def retrieve_analyses(start: int | None = None) -> list[str]:
+def retrieve_analyses(start: int = 0) -> list[str]:
     if (
         len(st.session_state.sorted_results) == 0
         or st.session_state.analysis_next is not None
