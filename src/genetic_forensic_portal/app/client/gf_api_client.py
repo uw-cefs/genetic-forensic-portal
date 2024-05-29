@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
@@ -10,7 +11,6 @@ from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
 from .models.list_analyses_response import ListAnalysesResponse
 
 logger = logging.getLogger(__name__)
-
 
 MISSING_DATA_ERROR = "data is required"
 MISSING_UUID_ERROR = "uuid is required"
@@ -221,3 +221,40 @@ def get_analysis_status(sample_id: str) -> AnalysisStatus:
 
     error_message = "No analysis found for the given UUID"
     raise FileNotFoundError(error_message)
+
+
+def get_all_analyses(sample_id: str) -> dict[str, Any]:
+    # def get_all_analyses(sample_id: str):
+    """
+    Fetches all types of analyses for a given sample ID.
+
+    Args:
+        sample_id (str): The UUID of the sample.
+
+    Returns:
+        dict: A dictionary containing results from all analysis types.
+    """
+    # results = {}
+
+    results: dict[str, Any] = {}
+
+    results["scat"] = None
+    results["voronoi"] = None
+    results["familial"] = None
+
+    try:
+        results["scat"] = get_scat_analysis(sample_id)
+    except FileNotFoundError:
+        logger.error("SCAT analysis not found for UUID: %s", sample_id)
+
+    try:
+        results["voronoi"] = get_voronoi_analysis(sample_id)
+    except FileNotFoundError:
+        logger.error("Voronoi analysis not found for UUID: %s", sample_id)
+
+    try:
+        results["familial"] = get_familial_analysis(sample_id)
+    except Exception:
+        logger.exception("Failed to load familial analysis for UUID: %s", sample_id)
+
+    return results

@@ -183,3 +183,92 @@ def test_get_familial_analysis_raises_error_for_none():
 def test_get_familial_analysis_with_erroring_file_raises():
     with pytest.raises(RuntimeError, match=client.FAMILIAL_TSV_ERROR):
         client.get_familial_analysis(client.FAMILIAL_FILE_PARSE_ERROR_UUID)
+
+
+# Test for All Analyses
+
+
+# Mock data for testing
+mock_scat_image = "scat_image_path"
+mock_voronoi_image = "voronoi_image_path"
+mock_familial_data = pd.DataFrame(
+    {"Column1": ["Data1", "Data2"], "Column2": ["Data3", "Data4"]}
+)
+
+
+@pytest.fixture()
+def mock_functions(mocker):
+    def _mock_functions(mock_scat=None, mock_voronoi=None, mock_familial=None):
+        mocker.patch(
+            "genetic_forensic_portal.app.client.gf_api_client.get_scat_analysis",
+            side_effect=mock_scat,
+        )
+        mocker.patch(
+            "genetic_forensic_portal.app.client.gf_api_client.get_voronoi_analysis",
+            side_effect=mock_voronoi,
+        )
+        mocker.patch(
+            "genetic_forensic_portal.app.client.gf_api_client.get_familial_analysis",
+            side_effect=mock_familial,
+        )
+
+    return _mock_functions
+
+
+@pytest.mark.parametrize(
+    ("uuid", "mock_scat", "mock_voronoi", "mock_familial", "expected_results"),
+    [
+        (
+            client.SAMPLE_UUID,
+            lambda _: mock_scat_image,
+            lambda _: mock_voronoi_image,
+            lambda _: mock_familial_data,
+            {
+                "scat": mock_scat_image,
+                "voronoi": mock_voronoi_image,
+                "familial": mock_familial_data,
+            },
+        ),
+        (
+            "missing-scat-uuid",
+            lambda _: None,
+            lambda _: mock_voronoi_image,
+            lambda _: mock_familial_data,
+            {
+                "scat": None,
+                "voronoi": mock_voronoi_image,
+                "familial": mock_familial_data,
+            },
+        ),
+        (
+            "missing-voronoi-uuid",
+            lambda _: mock_scat_image,
+            lambda _: None,
+            lambda _: mock_familial_data,
+            {"scat": mock_scat_image, "voronoi": None, "familial": mock_familial_data},
+        ),
+        (
+            "missing-familial-uuid",
+            lambda _: mock_scat_image,
+            lambda _: mock_voronoi_image,
+            lambda _: None,
+            {"scat": mock_scat_image, "voronoi": mock_voronoi_image, "familial": None},
+        ),
+        (
+            "all-missing-uuid",
+            lambda _: None,
+            lambda _: None,
+            lambda _: None,
+            {"scat": None, "voronoi": None, "familial": None},
+        ),
+    ],
+)
+def test_get_all_analyses(
+    mock_functions, uuid, mock_scat, mock_voronoi, mock_familial, expected_results
+):
+    """Test different scenarios for get_all_analyses."""
+    mock_functions(
+        mock_scat=mock_scat, mock_voronoi=mock_voronoi, mock_familial=mock_familial
+    )
+    results = client.get_all_analyses(uuid)
+    assert results == expected_results, f"Failed for UUID: {uuid}"
