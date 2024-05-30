@@ -179,14 +179,33 @@ def mock_functions(mocker):
     return _mock_functions
 
 
+# Mock functions with exceptions to trigger the except blocks
+def mock_scat(sample_id):
+    if sample_id in ["missing-scat-uuid", "all-missing-uuid"]:
+        raise FileNotFoundError
+    return mock_scat_image
+
+
+def mock_voronoi(sample_id):
+    if sample_id in ["missing-voronoi-uuid", "all-missing-uuid"]:
+        raise FileNotFoundError
+    return mock_voronoi_image
+
+
+def mock_familial(sample_id):
+    if sample_id in ["missing-familial-uuid", "all-missing-uuid"]:
+        raise Exception
+    return mock_familial_data
+
+
 @pytest.mark.parametrize(
     ("uuid", "mock_scat", "mock_voronoi", "mock_familial", "expected_results"),
     [
         (
             client.SAMPLE_UUID,
-            lambda _: mock_scat_image,
-            lambda _: mock_voronoi_image,
-            lambda _: mock_familial_data,
+            mock_scat,
+            mock_voronoi,
+            mock_familial,
             {
                 "scat": mock_scat_image,
                 "voronoi": mock_voronoi_image,
@@ -195,9 +214,9 @@ def mock_functions(mocker):
         ),
         (
             "missing-scat-uuid",
-            lambda _: None,
-            lambda _: mock_voronoi_image,
-            lambda _: mock_familial_data,
+            mock_scat,
+            mock_voronoi,
+            mock_familial,
             {
                 "scat": None,
                 "voronoi": mock_voronoi_image,
@@ -206,23 +225,23 @@ def mock_functions(mocker):
         ),
         (
             "missing-voronoi-uuid",
-            lambda _: mock_scat_image,
-            lambda _: None,
-            lambda _: mock_familial_data,
+            mock_scat,
+            mock_voronoi,
+            mock_familial,
             {"scat": mock_scat_image, "voronoi": None, "familial": mock_familial_data},
         ),
         (
             "missing-familial-uuid",
-            lambda _: mock_scat_image,
-            lambda _: mock_voronoi_image,
-            lambda _: None,
+            mock_scat,
+            mock_voronoi,
+            mock_familial,
             {"scat": mock_scat_image, "voronoi": mock_voronoi_image, "familial": None},
         ),
         (
             "all-missing-uuid",
-            lambda _: None,
-            lambda _: None,
-            lambda _: None,
+            mock_scat,
+            mock_voronoi,
+            mock_familial,
             {"scat": None, "voronoi": None, "familial": None},
         ),
     ],
