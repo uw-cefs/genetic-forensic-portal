@@ -47,7 +47,3 @@ if uuid:
         )
     else:
         st.error("Familial Analysis not found")
-
-
-
-

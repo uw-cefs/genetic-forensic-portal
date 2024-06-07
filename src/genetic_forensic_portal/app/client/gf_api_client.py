@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Any
 
 import pandas as pd
 
+from genetic_forensic_portal.app.client.models.get_analyses_response import (
+    GetAnalysesResponse,
+)
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
-from genetic_forensic_portal.app.client.models.get_analyses_response import GetAnalysesResponse
 
 from .models.list_analyses_response import ListAnalysesResponse
 
