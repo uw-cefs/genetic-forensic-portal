@@ -7,6 +7,7 @@ from typing import Any
 import pandas as pd
 
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
+from genetic_forensic_portal.app.client.models.get_analyses_response import GetAnalysesResponse
 
 from .models.list_analyses_response import ListAnalysesResponse
 
@@ -223,8 +224,7 @@ def get_analysis_status(sample_id: str) -> AnalysisStatus:
     raise FileNotFoundError(error_message)
 
 
-def get_all_analyses(sample_id: str) -> dict[str, Any]:
-    # def get_all_analyses(sample_id: str):
+def get_all_analyses(sample_id: str) -> GetAnalysesResponse:
     """
     Fetches all types of analyses for a given sample ID.
 
@@ -232,29 +232,25 @@ def get_all_analyses(sample_id: str) -> dict[str, Any]:
         sample_id (str): The UUID of the sample.
 
     Returns:
-        dict: A dictionary containing results from all analysis types.
+        GetAnalysesResponse: An object containing results from all analysis types.
     """
-    # results = {}
-
-    results: dict[str, Any] = {}
-
-    results["scat"] = None
-    results["voronoi"] = None
-    results["familial"] = None
+    scat = None
+    voronoi = None
+    familial = None
 
     try:
-        results["scat"] = get_scat_analysis(sample_id)
+        scat = get_scat_analysis(sample_id)
     except FileNotFoundError:
         logger.error("SCAT analysis not found for UUID: %s", sample_id)
 
     try:
-        results["voronoi"] = get_voronoi_analysis(sample_id)
+        voronoi = get_voronoi_analysis(sample_id)
     except FileNotFoundError:
         logger.error("Voronoi analysis not found for UUID: %s", sample_id)
 
     try:
-        results["familial"] = get_familial_analysis(sample_id)
+        familial = get_familial_analysis(sample_id)
     except Exception:
         logger.exception("Failed to load familial analysis for UUID: %s", sample_id)
 
-    return results
+    return GetAnalysesResponse(scat=scat, voronoi=voronoi, familial=familial)

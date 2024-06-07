@@ -5,6 +5,7 @@ import pytest
 
 import genetic_forensic_portal.app.client.gf_api_client as client
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
+from genetic_forensic_portal.app.client.models.get_analyses_response import GetAnalysesResponse
 
 TEST_FILE_DATA = b"this is a file"
 TEST_METADATA = "this is metadata"
@@ -185,35 +186,23 @@ def test_get_familial_analysis_with_erroring_file_raises():
         client.get_familial_analysis(client.FAMILIAL_FILE_PARSE_ERROR_UUID)
 
 
-# Test for All Analyses
-
+# Tests for the get_all_analyses function
 
 # Mock data for testing
 mock_scat_image = "scat_image_path"
 mock_voronoi_image = "voronoi_image_path"
-mock_familial_data = pd.DataFrame(
-    {"Column1": ["Data1", "Data2"], "Column2": ["Data3", "Data4"]}
-)
+mock_familial_data = pd.DataFrame({
+    "Column1": ["Data1", "Data2"],
+    "Column2": ["Data3", "Data4"]
+})
 
-
-@pytest.fixture()
+@pytest.fixture
 def mock_functions(mocker):
     def _mock_functions(mock_scat=None, mock_voronoi=None, mock_familial=None):
-        mocker.patch(
-            "genetic_forensic_portal.app.client.gf_api_client.get_scat_analysis",
-            side_effect=mock_scat,
-        )
-        mocker.patch(
-            "genetic_forensic_portal.app.client.gf_api_client.get_voronoi_analysis",
-            side_effect=mock_voronoi,
-        )
-        mocker.patch(
-            "genetic_forensic_portal.app.client.gf_api_client.get_familial_analysis",
-            side_effect=mock_familial,
-        )
-
+        mocker.patch('genetic_forensic_portal.app.client.gf_api_client.get_scat_analysis', side_effect=mock_scat)
+        mocker.patch('genetic_forensic_portal.app.client.gf_api_client.get_voronoi_analysis', side_effect=mock_voronoi)
+        mocker.patch('genetic_forensic_portal.app.client.gf_api_client.get_familial_analysis', side_effect=mock_familial)
     return _mock_functions
-
 
 # Mock functions with exceptions to trigger the except blocks
 def mock_scat(sample_id):
@@ -221,18 +210,15 @@ def mock_scat(sample_id):
         raise FileNotFoundError
     return mock_scat_image
 
-
 def mock_voronoi(sample_id):
     if sample_id in ["missing-voronoi-uuid", "all-missing-uuid"]:
         raise FileNotFoundError
     return mock_voronoi_image
 
-
 def mock_familial(sample_id):
     if sample_id in ["missing-familial-uuid", "all-missing-uuid"]:
         raise Exception
     return mock_familial_data
-
 
 @pytest.mark.parametrize(
     ("uuid", "mock_scat", "mock_voronoi", "mock_familial", "expected_results"),
@@ -242,43 +228,55 @@ def mock_familial(sample_id):
             mock_scat,
             mock_voronoi,
             mock_familial,
-            {
-                "scat": mock_scat_image,
-                "voronoi": mock_voronoi_image,
-                "familial": mock_familial_data,
-            },
+            GetAnalysesResponse(
+                scat=mock_scat_image,
+                voronoi=mock_voronoi_image,
+                familial=mock_familial_data,
+            ),
         ),
         (
             "missing-scat-uuid",
             mock_scat,
             mock_voronoi,
             mock_familial,
-            {
-                "scat": None,
-                "voronoi": mock_voronoi_image,
-                "familial": mock_familial_data,
-            },
+            GetAnalysesResponse(
+                scat=None,
+                voronoi=mock_voronoi_image,
+                familial=mock_familial_data,
+            ),
         ),
         (
             "missing-voronoi-uuid",
             mock_scat,
             mock_voronoi,
             mock_familial,
-            {"scat": mock_scat_image, "voronoi": None, "familial": mock_familial_data},
+            GetAnalysesResponse(
+                scat=mock_scat_image,
+                voronoi=None,
+                familial=mock_familial_data,
+            ),
         ),
         (
             "missing-familial-uuid",
             mock_scat,
             mock_voronoi,
             mock_familial,
-            {"scat": mock_scat_image, "voronoi": mock_voronoi_image, "familial": None},
+            GetAnalysesResponse(
+                scat=mock_scat_image,
+                voronoi=mock_voronoi_image,
+                familial=None,
+            ),
         ),
         (
             "all-missing-uuid",
             mock_scat,
             mock_voronoi,
             mock_familial,
-            {"scat": None, "voronoi": None, "familial": None},
+            GetAnalysesResponse(
+                scat=None,
+                voronoi=None,
+                familial=None,
+            ),
         ),
     ],
 )
@@ -290,4 +288,10 @@ def test_get_all_analyses(
         mock_scat=mock_scat, mock_voronoi=mock_voronoi, mock_familial=mock_familial
     )
     results = client.get_all_analyses(uuid)
-    assert results == expected_results, f"Failed for UUID: {uuid}"
+    
+    assert results.scat == expected_results.scat, f"SCAT analysis mismatch for UUID: {uuid}"
+    assert results.voronoi == expected_results.voronoi, f"Voronoi analysis mismatch for UUID: {uuid}"
+    if isinstance(results.familial, pd.DataFrame) and isinstance(expected_results.familial, pd.DataFrame):
+        assert results.familial.equals(expected_results.familial), f"Familial analysis mismatch for UUID: {uuid}"
+    else:
+        assert results.familial == expected_results.familial, f"Familial analysis mismatch for UUID: {uuid}"
