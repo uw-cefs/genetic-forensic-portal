@@ -35,6 +35,9 @@ dependencies = [
 
 [project.scripts]
 gf-portal = "genetic_forensic_portal.cli:up"
+gf-auth-run = "genetic_forensic_portal.auth:up"
+gf-auth-stop = "genetic_forensic_portal.auth:down"
+gf-auth-dev-export-DO-NOT-RUN-IN-PROD = "genetic_forensic_portal.auth:export"
 
 [project.optional-dependencies]
 dev = [
