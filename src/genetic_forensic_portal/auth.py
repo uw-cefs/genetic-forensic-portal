@@ -56,19 +56,33 @@ def start_keycloak(force: bool = False) -> None:
 
 
 def up() -> None:
+    if "DEFAULT_AUTH_ADMIN_PASSWORD" in os.environ:
+        os.environ["KEYCLOAK_ADMIN"] = os.environ["DEFAULT_AUTH_ADMIN_USERNAME"]
+        os.environ["KEYCLOAK_ADMIN_PASSWORD"] = os.environ[
+            "DEFAULT_AUTH_ADMIN_PASSWORD"
+        ]
+    elif (
+        "KEYCLOAK_ADMIN" not in os.environ
+        or "KEYCLOAK_ADMIN_PASSWORD" not in os.environ
+    ):
+        os.environ["KEYCLOAK_ADMIN"] = input("Enter Keycloak admin username: ")
+        os.environ["KEYCLOAK_ADMIN_PASSWORD"] = input("Enter Keycloak admin password: ")
+
+    down()
     logger.info("Starting Keycloak")
     start_keycloak()
 
 
 def down() -> None:
-    logger.info("Stopping Keycloak")
-    keycloak_pid_file = KEYCLOAK_PID_FILE.open("r")
-    keycloak_pid = keycloak_pid_file.read()
-    keycloak_pid_file.close()
+    if KEYCLOAK_PID_FILE.exists():
+        logger.info("Stopping Keycloak")
+        keycloak_pid_file = KEYCLOAK_PID_FILE.open("r")
+        keycloak_pid = keycloak_pid_file.read()
+        keycloak_pid_file.close()
 
-    os.system(f"kill -9 {keycloak_pid}")
+        os.system(f"kill -9 {keycloak_pid}")
 
-    KEYCLOAK_PID_FILE.unlink()
+        KEYCLOAK_PID_FILE.unlink()
 
 
 def export() -> None:

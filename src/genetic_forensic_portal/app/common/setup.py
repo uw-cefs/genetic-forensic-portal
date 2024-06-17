@@ -29,48 +29,7 @@ def login_success(message: str, username: str, token: dict[Any, Any]) -> None:
 
 @st.experimental_dialog("Login")  # type: ignore[misc]
 def authentication_dialog() -> None:
-    login_tab, create_tab = st.tabs(
-        [
-            "Login to existing account",
-            "Create new account",
-        ]
-    )
-
-    # Create new account
-    with create_tab:
-        st.write("Coming soon!")
-        # TODO figure out how to connect to keycloak to create an account
-        # with st.form(key="create"):
-        #     username = st.text_input(
-        #         label="Create a username",
-        #         placeholder=None,
-        #         help=None,
-        #         disabled=st.session_state[AUTHENTICATED],
-        #     )
-
-        #     password = st.text_input(
-        #         label="Create a password",
-        #         placeholder=None,
-        #         help=None,
-        #         type="password",
-        #         disabled=st.session_state[AUTHENTICATED],
-        #     )
-
-        #     if st.form_submit_button(
-        #         label="Create account",
-        #         type="primary",
-        #         disabled=st.session_state[AUTHENTICATED],
-        #     ):
-        #         try:
-        #             st.write(username)
-        #         except Exception as e:
-        #             st.error(e.message)
-        #             st.session_state[AUTHENTICATED] = False
-        #         else:
-        #             login_success("Account created!", username)
-
-    # Login to existing account
-    with login_tab, st.form(key="login"):
+    with st.form(key="login"):
         username = st.text_input(
             label="Login username",
             placeholder=None,
