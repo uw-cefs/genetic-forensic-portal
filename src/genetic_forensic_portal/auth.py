@@ -65,8 +65,8 @@ def up() -> None:
         "KEYCLOAK_ADMIN" not in os.environ
         or "KEYCLOAK_ADMIN_PASSWORD" not in os.environ
     ):
-        os.environ["KEYCLOAK_ADMIN"] = input("Enter Keycloak admin username: ")
-        os.environ["KEYCLOAK_ADMIN_PASSWORD"] = input("Enter Keycloak admin password: ")
+        os.environ["KEYCLOAK_ADMIN"] = "admin"
+        os.environ["KEYCLOAK_ADMIN_PASSWORD"] = "admin"
 
     down()
     logger.info("Starting Keycloak")
