@@ -18,8 +18,9 @@
   },
   "onCreateCommand": {
     "install_package": "pip install -e '${containerWorkspaceFolder}[all]'"
-  },
-  "updateContentCommand": {
-    "run_keycloak_auth_server": "gf-auth-run"
   }
+  // },
+  // "updateContentCommand": {
+  //   "run_keycloak_auth_server": "gf-auth-run"
+  // }
 }
