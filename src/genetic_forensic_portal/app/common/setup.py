@@ -81,7 +81,7 @@ def create_authentication() -> None:
             authentication_dialog()
     else:
         st.write(f"Welcome {st.session_state[USERNAME]}!")
-        if st.button("Logout1"):
+        if st.button("Logout"):
             authentication_logout()
 
 

@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+import sys
 from pathlib import Path
 from urllib.request import urlretrieve
 from zipfile import ZipFile
@@ -24,6 +25,7 @@ REALM_DIRECTORY_TEMP = REALM_DIRECTORY / "temp"
 
 KEYCLOAK_PID_FILE = PORTAL_CACHE / "keycloak-pid"
 
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
 
 
@@ -46,10 +48,20 @@ def start_keycloak(force: bool = False) -> None:
 
         # Import saved realm info and users into keycloak
         logger.info("Importing realm")
-        os.system(f"{kc_sh} import --dir {REALM_DIRECTORY}")
+        subprocess.run(
+            [f"{kc_sh}", "import", "--dir", f"{REALM_DIRECTORY}"],
+            stdout=subprocess.DEVNULL,
+            check=False,
+        )
+
+        logger.info("Realm import completed!")
 
         # Start keycloak with imported realm
-        process = subprocess.Popen([f"{kc_sh}", "start-dev", "--import-realm"])
+        logger.info("Starting Keycloak with imported realm")
+        process = subprocess.Popen(
+            [f"{kc_sh}", "start-dev", "--import-realm"], stdout=subprocess.DEVNULL
+        )
+        logger.info("Keycloak started as process %s", process.pid)
 
         with KEYCLOAK_PID_FILE.open("w") as f:
             f.write(str(process.pid))
