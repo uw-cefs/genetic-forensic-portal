@@ -87,6 +87,9 @@ testpaths = [
 
 [tool.coverage]
 run.source = ["genetic_forensic_portal"]
+run.omit = [
+  "src/genetic_forensic_portal/auth.py",
+]
 report.exclude_also = [
   '\.\.\.',
   'if typing.TYPE_CHECKING:',

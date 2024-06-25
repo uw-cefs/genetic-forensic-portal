@@ -11,7 +11,7 @@ CACHE_DIR = HOME_DIR / ".cache"
 PORTAL_CACHE = CACHE_DIR / "gf-portal"
 PORTAL_CACHE.mkdir(parents=True, exist_ok=True)
 
-KEYCLOAK_VERSION = "25.0.0"
+KEYCLOAK_VERSION = os.environ.get("KEYCLOAK_VERSION", "25.0.0")
 KEYCLOAK_URL = os.environ.get(
     "KEYCLOAK_URL",
     f"https://github.com/keycloak/keycloak/releases/download/{KEYCLOAK_VERSION}/keycloak-{KEYCLOAK_VERSION}.zip",
