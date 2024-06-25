@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from keycloak import KeycloakOpenID
 
+KEYCLOAK_SERVER_URL = os.environ.get("KEYCLOAK_SERVER_URL", "http://localhost:8080/")
+
 keycloak_openid = KeycloakOpenID(
-    server_url="http://localhost:8080/",
+    server_url=KEYCLOAK_SERVER_URL,
     client_id="gf-portal-login",
     realm_name="gf-portal",
 )
