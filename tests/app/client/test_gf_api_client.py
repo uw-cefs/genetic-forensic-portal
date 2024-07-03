@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from unittest import mock
+
 import pandas as pd
 import pytest
 import streamlit
@@ -54,6 +56,17 @@ def test_upload_no_metadata_returns_different_uuid():
     response = client.upload_sample_analysis(TEST_FILE_DATA)
 
     assert response == client.NO_METADATA_UUID
+
+
+def test_upload_no_access_returns_error():
+    with (
+        pytest.raises(PermissionError, match=client.UPLOAD_DENIED_ERROR),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_create_access",
+            return_value=False,
+        ),
+    ):
+        client.upload_sample_analysis(TEST_FILE_DATA, TEST_METADATA)
 
 
 # SCAT Analysis
