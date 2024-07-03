@@ -176,7 +176,7 @@ MOCK_USER_ACCESS_CONTROL = {
     NO_ACCESS_USER: Permission(
         entity=TEST_USER_1,
         effect=Effect.DENY,
-        actions=[Action.VIEW, Action.DOWNLOAD, Action.CREATE],
+        actions=[Action.VIEW, Action.DOWNLOAD, Action.CREATE, Action.LIST_ALL],
     ),
 }
 
