@@ -91,7 +91,24 @@ def test_get_scat_analysis_no_metadata_returns_different_image_path():
 
 
 def test_get_scat_analysis_raises_error():
-    with pytest.raises(FileNotFoundError):
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=True,
+        ),
+    ):
+        client.get_scat_analysis("not-an-uuid")
+
+
+def test_get_scat_analysis_no_access_raises_error():
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=False,
+        ),
+    ):
         client.get_scat_analysis("not-an-uuid")
 
 
@@ -168,7 +185,24 @@ def test_get_voronoi_analysis_no_metadata_returns_different_image_path():
 
 
 def test_get_voronoi_analysis_raises_error():
-    with pytest.raises(FileNotFoundError):
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=True,
+        ),
+    ):
+        client.get_voronoi_analysis("not-an-uuid")
+
+
+def test_get_voronoi_analysis_no_access_raises_error():
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=False,
+        ),
+    ):
         client.get_voronoi_analysis("not-an-uuid")
 
 
@@ -194,8 +228,25 @@ def test_get_analysis_status_failed():
 
 
 def test_get_analysis_status_not_found():
-    with pytest.raises(FileNotFoundError):
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=True,
+        ),
+    ):
         client.get_analysis_status("unknown-uuid")
+
+
+def test_get_analysis_status_no_access_raises_error():
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=False,
+        ),
+    ):
+        client.get_analysis_status("not-an-uuid")
 
 
 def test_get_analysis_status_no_uuid_provided():
@@ -223,7 +274,24 @@ def test_get_familial_analysis_no_metadata_returns_different_image_path():
 
 
 def test_get_familial_analysis_raises_error():
-    with pytest.raises(FileNotFoundError):
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=True,
+        ),
+    ):
+        client.get_familial_analysis("not-an-uuid")
+
+
+def test_get_familial_analysis_no_access_raises_error():
+    with (
+        pytest.raises(FileNotFoundError),
+        mock.patch(
+            "genetic_forensic_portal.app.client.keycloak_client.check_view_access",
+            return_value=False,
+        ),
+    ):
         client.get_familial_analysis("not-an-uuid")
 
 
