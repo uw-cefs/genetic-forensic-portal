@@ -1,3 +1,5 @@
+# This file originally from Mary (mkkuhner) @ UW's Center for Environmental Forensic Science
+
 import io
 import logging
 

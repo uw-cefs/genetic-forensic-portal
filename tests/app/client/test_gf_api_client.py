@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 import io
 from unittest import mock
 
@@ -11,9 +10,6 @@ import streamlit
 import genetic_forensic_portal.app.client.gf_api_client as client
 from genetic_forensic_portal.app.client.models.get_analyses_response import (
     GetAnalysesResponse,
-
-from genetic_forensic_portal.app.utils.validate_input_file import (
-    HEADER_MUST_START_WITH_MATCHID,
 )
 from genetic_forensic_portal.app.common.constants import (
     ANALYSIS_FAILED_UUID,
@@ -24,6 +20,9 @@ from genetic_forensic_portal.app.common.constants import (
     ROLES,
     SAMPLE_UUID,
     USERNAME,
+)
+from genetic_forensic_portal.app.utils.validate_input_file import (
+    HEADER_MUST_START_WITH_MATCHID,
 )
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
 
