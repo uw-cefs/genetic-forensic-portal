@@ -78,6 +78,11 @@ def upload_sample_analysis(data: io.BytesIO, metadata: str | None = None) -> str
     if data is None:
         raise ValueError(MISSING_DATA_ERROR)
 
+    if not auth_client.check_create_access(
+        st.session_state[USERNAME], st.session_state[ROLES]
+    ):
+        raise PermissionError(UPLOAD_DENIED_ERROR)
+
     data_as_string = io.StringIO(data.getvalue().decode("utf-8"))
     validate_input_file.validate_input_file(data_as_string)
 
@@ -85,11 +90,6 @@ def upload_sample_analysis(data: io.BytesIO, metadata: str | None = None) -> str
 
     if metadata is None:
         sample_identifier = NO_METADATA_UUID
-
-    if not auth_client.check_create_access(
-        st.session_state[USERNAME], st.session_state[ROLES]
-    ):
-        raise PermissionError(UPLOAD_DENIED_ERROR)
 
     return sample_identifier
 
