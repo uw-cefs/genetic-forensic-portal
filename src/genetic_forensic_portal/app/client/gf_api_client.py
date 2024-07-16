@@ -10,8 +10,6 @@ import streamlit as st
 from genetic_forensic_portal.app.client.models.get_analyses_response import (
     GetAnalysesResponse,
 )
-
-from genetic_forensic_portal.app.utils import validate_input_file
 from genetic_forensic_portal.app.common.constants import (
     ANALYSIS_FAILED_UUID,
     FAMILIAL_FILE_PARSE_ERROR_UUID,
@@ -23,6 +21,7 @@ from genetic_forensic_portal.app.common.constants import (
     SAMPLE_UUID,
     USERNAME,
 )
+from genetic_forensic_portal.app.utils import validate_input_file
 from genetic_forensic_portal.utils.analysis_status import AnalysisStatus
 
 from . import keycloak_client as auth_client
