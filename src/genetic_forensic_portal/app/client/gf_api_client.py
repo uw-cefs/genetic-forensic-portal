@@ -200,7 +200,7 @@ def get_voronoi_analysis(sample_id: str) -> str:
 
 
 def get_voronoi_analysis_data(sample_id: str) -> str:
-    """Gets the Voronoi analysis for a sample
+    """Gets the Voronoi analysis data for a sample
 
     Args:
         sample_id (str): The sample ID to get the Voronoi analysis for"""
