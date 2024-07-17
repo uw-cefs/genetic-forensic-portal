@@ -49,12 +49,16 @@ UUID_LIST = [
 SAMPLE_PATH = Path(__file__).parents[2] / "resources"  # equivalent to ../../resources
 
 SAMPLE_IMAGE_PATH = SAMPLE_PATH / "sample_images"
-SCAT_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_scat.png")
-SCAT_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_scat.png")
+SCAT_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tst_07-16_0.7t_scat_median.png")
+SCAT_SAMPLE_DATA_PATH = str(SAMPLE_IMAGE_PATH / "tst_07-16_scat.zip")
+SCAT_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tst2_07-17_0.7t_scat_median.png")
+SCAT_SAMPLE_DATA_PATH_2 = str(SAMPLE_IMAGE_PATH / "tst2_07-17_scat.zip")
 
 # Add Voronoi sample image paths
-VORONOI_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tan001_voronoi.png")
-VORONOI_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tan002_voronoi.png")
+VORONOI_SAMPLE_IMAGE = str(SAMPLE_IMAGE_PATH / "tst_07-16_0.7t_voronoi_median.png")
+VORONOI_SAMPLE_DATA_PATH = str(SAMPLE_IMAGE_PATH / "tst_07-16_voronoi.zip")
+VORONOI_SAMPLE_IMAGE_2 = str(SAMPLE_IMAGE_PATH / "tst2_07-17_0.7t_voronoi_median.png")
+VORONOI_SAMPLE_DATA_PATH_2 = str(SAMPLE_IMAGE_PATH / "tst2_07-17_voronoi.zip")
 
 SAMPLE_DATA_PATH = SAMPLE_PATH / "sample_data"
 FAMILIAL_SAMPLE_DATA = str(SAMPLE_DATA_PATH / "sample_familial_matches.tsv")
@@ -125,6 +129,47 @@ def get_scat_analysis(sample_id: str) -> str:
     return analysis
 
 
+def get_scat_analysis_data(sample_id: str) -> str:
+    """Gets the SCAT analysis data for a sample
+
+    Args:
+        sample_id (str): The sample ID to get the SCAT analysis data for"""
+    # This is a placeholder. Eventually, the real API call will be here
+    # and we can return its response
+
+    if sample_id is None:
+        raise ValueError(MISSING_UUID_ERROR)
+
+    if not auth_client.check_download_access(
+        st.session_state[USERNAME], st.session_state[ROLES], sample_id
+    ):
+        raise FileNotFoundError
+
+    # This placeholder just returns the local file location of the data zip.
+    # In the real implementation, the data returned would probably live in
+    #    some sort of blob storage system -- like S3 or Azure Blob Storage.
+    # In that case, the actual API call would return a URL to the data with
+    #    particular, temporary access associated with it.
+    # With S3, this would be a pre-signed URL:
+    #    https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html
+    # With Azure Blob Storage, this would be an SAS token:
+    #    https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview
+
+    analysis_path = None
+
+    if sample_id == SAMPLE_UUID:
+        analysis_path = SCAT_SAMPLE_DATA_PATH
+    elif sample_id == NO_METADATA_UUID:
+        analysis_path = SCAT_SAMPLE_DATA_PATH_2
+    elif sample_id == IN_PROGRESS_UUID:
+        analysis_path = SCAT_SAMPLE_DATA_PATH
+
+    if analysis_path is None:
+        raise FileNotFoundError
+
+    return analysis_path
+
+
 def get_voronoi_analysis(sample_id: str) -> str:
     """Gets the Voronoi analysis for a sample
 
@@ -147,6 +192,45 @@ def get_voronoi_analysis(sample_id: str) -> str:
         analysis = VORONOI_SAMPLE_IMAGE
     elif sample_id == NO_METADATA_UUID:
         analysis = VORONOI_SAMPLE_IMAGE_2
+
+    if analysis is None:
+        raise FileNotFoundError
+
+    return analysis
+
+
+def get_voronoi_analysis_data(sample_id: str) -> str:
+    """Gets the Voronoi analysis for a sample
+
+    Args:
+        sample_id (str): The sample ID to get the Voronoi analysis for"""
+    # This is a placeholder. Eventually, the real API call will be here
+    # and we can return its response
+
+    if sample_id is None:
+        raise ValueError(MISSING_UUID_ERROR)
+
+    if not auth_client.check_download_access(
+        st.session_state[USERNAME], st.session_state[ROLES], sample_id
+    ):
+        raise FileNotFoundError
+
+    # This placeholder just returns the local file location of the data zip.
+    # In the real implementation, the data returned would probably live in
+    #    some sort of blob storage system -- like S3 or Azure Blob Storage.
+    # In that case, the actual API call would return a URL to the data with
+    #    particular, temporary access associated with it.
+    # With S3, this would be a pre-signed URL:
+    #    https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html
+    # With Azure Blob Storage, this would be an SAS token:
+    #    https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview
+
+    analysis = None
+
+    if sample_id == SAMPLE_UUID:
+        analysis = VORONOI_SAMPLE_DATA_PATH
+    elif sample_id == NO_METADATA_UUID:
+        analysis = VORONOI_SAMPLE_DATA_PATH_2
 
     if analysis is None:
         raise FileNotFoundError
