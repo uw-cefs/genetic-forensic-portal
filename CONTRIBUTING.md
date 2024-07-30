@@ -19,21 +19,21 @@ steps:
 
 1. Create conda environment
 
-    ```bash
-    conda create -y -n genetic-forensics python=3.12 pip
-    ```
+   ```bash
+   conda create -y -n genetic-forensics python=3.12 pip
+   ```
 
 2. Activate conda environment
 
-    ```bash
-    conda activate genetic-forensics
-    ```
+   ```bash
+   conda activate genetic-forensics
+   ```
 
 3. Install dependencies
 
-    ```bash
-    pip install -e ".[all]"
-    ```
+   ```bash
+   pip install -e ".[all]"
+   ```
 
 ### Post setup
 
@@ -122,9 +122,8 @@ environment for each run.
 
 ## Building docs
 
-Build the API docs using the command below.
-This will generate the API documentation,
-which are retrieved from the docstrings in the code.:
+Build the API docs using the command below. This will generate the API
+documentation, which are retrieved from the docstrings in the code.:
 
 ```bash
 nox -s build_api_docs
