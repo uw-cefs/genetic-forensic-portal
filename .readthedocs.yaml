@@ -9,7 +9,7 @@ build:
     python: "3.12"
   jobs:
     pre_build:
-      # Generate the Sphinx configuration for this Jupyter Book so it builds.
+      # Generate the Sphinx API docs so it builds.
       - "nox -s build_api_docs"
 sphinx:
   configuration: docs/conf.py
