@@ -47,7 +47,7 @@ pre-commit install # Will install a pre-commit hook into the git repo
 NOTE: You can also/alternatively run `pre-commit run` (changes only) or
 `pre-commit run --all-files` to check even without installing the hook.
 
-## Run Genetic Forensic portal
+### Run Genetic Forensic portal
 
 First run the authentication application (Keycloak server) with the following
 command
@@ -62,7 +62,7 @@ You are now ready to run the Genetic Forensic portal Streamlit application:
 gf-portal
 ```
 
-## Stopping the auth portal
+### Stopping the auth portal
 
 To stop the auth portal, run the following command:
 
@@ -70,7 +70,7 @@ To stop the auth portal, run the following command:
 gf-auth-stop
 ```
 
-## DO NOT RUN IN PROD: Exporting a list of DEV users from the DEV auth server
+### DO NOT RUN IN PROD: Exporting a list of DEV users from the DEV auth server
 
 To update the Keycloak realm containing the dev users, you can run the following
 command. Do not export your actual production users this way, as you do NOT want
