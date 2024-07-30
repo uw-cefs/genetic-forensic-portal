@@ -19,21 +19,21 @@ steps:
 
 1. Create conda environment
 
-```bash
-conda create -y -n genetic-forensics python=3.12 pip
-```
+    ```bash
+    conda create -y -n genetic-forensics python=3.12 pip
+    ```
 
 2. Activate conda environment
 
-```bash
-conda activate genetic-forensics
-```
+    ```bash
+    conda activate genetic-forensics
+    ```
 
 3. Install dependencies
 
-```bash
-pip install -e ".[dev,docs]"
-```
+    ```bash
+    pip install -e ".[all]"
+    ```
 
 ### Post setup
 
@@ -112,6 +112,7 @@ specific jobs:
 ```console
 $ nox -s lint  # Lint only
 $ nox -s tests  # Python tests
+$ nox -s build_api_docs # Build the API docs from docstrings
 $ nox -s docs -- --serve  # Build and serve the docs
 $ nox -s build  # Make an SDist and wheel
 ```
@@ -121,16 +122,24 @@ environment for each run.
 
 ## Building docs
 
-You can build the docs using:
+Build the API docs using the command below.
+This will generate the API documentation,
+which are retrieved from the docstrings in the code.:
 
 ```bash
-nox -s docs
+nox -s build_api_docs
 ```
 
 You can see a preview with:
 
 ```bash
 nox -s docs -- --serve
+```
+
+You can build the docs to html using:
+
+```bash
+nox -s docs
 ```
 
 ## Pull Requests

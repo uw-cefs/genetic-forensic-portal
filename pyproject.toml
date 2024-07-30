@@ -41,6 +41,8 @@ gf-auth-dev-export-DO-NOT-RUN-IN-PROD = "genetic_forensic_portal.auth:export"
 
 [project.optional-dependencies]
 dev = [
+  "nox",
+  "pre-commit",
   "pytest >=6",
   "pytest-cov >=3",
   "pytest-mock",
