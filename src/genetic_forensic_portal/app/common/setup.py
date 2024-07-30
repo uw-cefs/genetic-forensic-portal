@@ -1,3 +1,8 @@
+"""Contains the logic run at the top of every Streamlit page to set up the session state and check for authentication.
+
+Other code that should be run at the top of every Streamlit page should be added here.
+"""
+
 from typing import Any
 
 import streamlit as st
@@ -12,6 +17,7 @@ from genetic_forensic_portal.app.common.constants import (
 
 
 def initialize_session_state() -> None:
+    """Initialize the session state variables used for authentication."""
     if AUTHENTICATED not in st.session_state:
         st.session_state[AUTHENTICATED] = False
 
@@ -20,6 +26,12 @@ def initialize_session_state() -> None:
 
 
 def login_success(message: str, username: str, token: dict[Any, Any]) -> None:
+    """Set the session state variables when a user successfully logs in.
+
+    Args:
+        message (str): The message to display to the user.
+        username (str): The username of the user that logged in.
+        token (dict): The token returned from the Keycloak API."""
     st.success(message)
     st.session_state[AUTHENTICATED] = True
     st.session_state[USERNAME] = username
@@ -30,6 +42,7 @@ def login_success(message: str, username: str, token: dict[Any, Any]) -> None:
 
 @st.experimental_dialog("Login")  # type: ignore[misc]
 def authentication_dialog() -> None:
+    """Create the login form for the user to authenticate."""
     with st.form(key="login"):
         username = st.text_input(
             label="Login username",
@@ -66,6 +79,7 @@ def authentication_dialog() -> None:
 
 @st.experimental_dialog("Logout Flow")  # type: ignore[misc]
 def authentication_logout() -> None:
+    """Create the logout confirmation dialog for the user to confirm logging out."""
     st.write(f"Are you sure you want to logout, {st.session_state[USERNAME]}?")
     if st.button("Confirm Logout"):
         keycloak_client.logout_user(st.session_state[TOKEN])
@@ -77,6 +91,7 @@ def authentication_logout() -> None:
 
 
 def create_authentication() -> None:
+    """Create the authentication flow for the user to log in and log out."""
     if not st.session_state[AUTHENTICATED]:
         if st.button("Login"):
             authentication_dialog()
@@ -87,5 +102,6 @@ def create_authentication() -> None:
 
 
 def initialize() -> None:
+    """Initialize the session state and create the authentication flow."""
     initialize_session_state()
     create_authentication()
