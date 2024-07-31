@@ -14,6 +14,24 @@ project.
 
 ### Environment Setup
 
+#### Codespaces Environment Setup
+
+To open a [GitHub Codespace](https://github.com/features/codespaces) where you
+can run and develop the portal, you can click the button below to do so, or by
+following GitHub's guide on how to do so
+[here](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository).
+
+It may take a few minutes to get up and running, but once it's ready, you can
+skip ahead to the section **Run Genetic Forensic Portal**.
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/uw-ssec/genetic-forensic-portal?quickstart=1)
+
+This option is especially good for Windows users, as the current scripts to run
+the local Keycloak client are intended for Unix-based operating systems
+(Mac/Linux), and Codespaces can easily provide you with such an environment.
+
+#### Local Environment Setup
+
 Fork the repository, and create your local version, then follow the installation
 steps:
 
@@ -98,12 +116,8 @@ pytest --cov=genetic_forensic_portal tests/ --cov-report xml:coverage.xml
 
 ## Developing with nox
 
-The fastest way to start with development is to use nox. If you don't have nox,
-you can use `pipx run nox` to run it without installing, or `pipx install nox`.
-If you don't have pipx (pip for applications), then you can install with
-`pip install pipx` (the only case were installing an application with regular
-pip is reasonable). If you use macOS, then pipx and nox are both in brew, use
-`brew install pipx nox`.
+The fastest way to start with development is to use nox, which will be installed
+as part of the `dev` environment that you have already set up.
 
 To use, run `nox`. This will lint and test using every installed version of
 Python on your system, skipping ones that are not installed. You can also run
