@@ -37,10 +37,9 @@ def login_success(message: str, username: str, token: dict[Any, Any]) -> None:
     st.session_state[USERNAME] = username
     st.session_state[TOKEN] = token
     st.session_state[ROLES] = keycloak_client.get_user_roles(token)
-    st.rerun()
 
 
-@st.experimental_dialog("Login")  # type: ignore[misc]
+@st.dialog("Login")  # type: ignore[misc]
 def authentication_dialog() -> None:
     """Create the login form for the user to authenticate."""
     with st.form(key="login"):
@@ -69,6 +68,7 @@ def authentication_dialog() -> None:
 
                 if len(token) > 0:
                     login_success("Logged in!", username, token)
+
                 else:
                     st.error("Error logging in")
                     st.session_state[AUTHENTICATED] = False
@@ -76,8 +76,11 @@ def authentication_dialog() -> None:
                 st.error(e)
                 st.session_state[AUTHENTICATED] = False
 
+            if st.session_state[AUTHENTICATED]:
+                st.rerun()
 
-@st.experimental_dialog("Logout Flow")  # type: ignore[misc]
+
+@st.dialog("Logout Flow")  # type: ignore[misc]
 def authentication_logout() -> None:
     """Create the logout confirmation dialog for the user to confirm logging out."""
     st.write(f"Are you sure you want to logout, {st.session_state[USERNAME]}?")
